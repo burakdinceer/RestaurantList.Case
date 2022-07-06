@@ -7,7 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using Microsoft.OpenApi.Models;
+using RestaurantList.Case.Entities;
 using RestaurantList.Case.Entities.Context;
+using RestaurantList.Case.Interfaces;
+using RestaurantList.Case.Repositories;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -29,6 +32,8 @@ namespace RestaurantList.Case
         {
 
             services.AddControllers();
+            services.AddScoped<IGenericRepository<Cafe>, GenericRepository<Cafe>>();
+            services.AddScoped<IGenericRepository<Category>, GenericRepository<Category>>();
             services.AddDbContext<DataContext>(opt =>
             {
                 opt.UseSqlServer("Server=DESKTOP-7IFFEOA\\SQLEXPRESS;Database=CafeDb;Trusted_Connection=True");
