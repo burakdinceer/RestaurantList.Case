@@ -32,6 +32,8 @@ namespace RestaurantList.Case.Controllers
                 CafeName = x.CafeName,
                 CuisineType = x.CuisineType,
                 Location = x.Location,
+                CategoryId=x.CategoryId,
+                CategoryName=x.Category?.Name
             }).ToList();
             return list;
         }
@@ -46,9 +48,45 @@ namespace RestaurantList.Case.Controllers
                 CafeName = x.CafeName,
                 CuisineType = x.CuisineType,
                 Location = x.Location,
+                CategoryName =x.Category?.Name,
+                CategoryId = x.CategoryId
             }).SingleOrDefault();
             return result;
         }
+
+        [HttpPut]
+        [Route("UpdateCafe")]
+        public CafeResponseDto UpdateCafe(CafeRequestDto model, int id)
+        {
+            var control = _cafeRepository.GetId(id);
+            if (control != null)
+            {
+                control.CafeName = model.CafeName;
+                control.Location = model.Location;
+                control.CuisineType = model.CuisineType;
+                control.Capacity = model.Capacity;
+            }
+
+           _cafeRepository.Update(control);
+
+            var get = _cafeRepository.GetId(id);
+
+            CafeResponseDto cafeResponseDto = new CafeResponseDto
+            {
+                CafeId = get.CafeId,
+                CafeName = get.CafeName,
+                CategoryId = get.CategoryId,
+                CategoryName = get.Category.Name,
+                CuisineType = get.CuisineType,
+                Location = get.Location,
+
+
+            };
+            return cafeResponseDto;
+
+        }
+
+
 
 
     }
